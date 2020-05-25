@@ -43,7 +43,7 @@ services:
 
 # dgraph services: https://dgraph.io/blog/post/building-todo-list-react-dgraph/
   zero:
-    #container_name: draph-zero
+    container_name: draph-zero
     image: dgraph/dgraph:v20.03.2
     volumes:
       - type: volume
@@ -58,7 +58,7 @@ services:
     command: dgraph zero --my=zero:5080
 
   server:
-    #container_name: draph-server
+    container_name: draph-server
     image: dgraph/dgraph:v20.03.2
     volumes:
       - type: volume
@@ -73,7 +73,7 @@ services:
     command: dgraph alpha --my=server:7080 --lru_mb=2048 --zero=zero:5080
 
   ratel:
-    #container_name: draph-ratel
+    container_name: draph-ratel
     image: dgraph/dgraph:v20.03.2
     volumes:
       - type: volume
