@@ -19,4 +19,6 @@ docker-compose up --build
 
 - The _React_ portion is created using the [create-react-app](https://github.com/facebook/create-react-app) tool.
 
-- [gRPC](https://github.com/grpc/grpc) server is listening on port _9090_
+- [gRPC](https://github.com/grpc/grpc) server is listening on port _9090_.
+
+- The _gen-proto_ file is a script to generate the proto file for _go_ and _typescript/js_.
