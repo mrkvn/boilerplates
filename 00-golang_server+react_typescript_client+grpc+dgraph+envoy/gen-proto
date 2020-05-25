@@ -1,0 +1,4 @@
+#!/bin/bash
+
+protoc protos/hello/hello.proto --go_out=plugins=grpc:webserver
+protoc protos/hello/hello.proto --js_out=import_style=commonjs:webclient/src --grpc-web_out=import_style=typescript,mode=grpcwebtext:webclient/src

@@ -1,0 +1,89 @@
+version: "3.7"
+services:
+  envoy:
+    container_name: envoy
+    build:
+      context: ./envoy
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+      - "9901:9901"
+  webclient-react:
+    container_name: react-ts
+    build:
+      context: ./webclient
+      dockerfile: Dockerfile
+    #depends_on:
+      #- envoy
+      #- webserver-go
+    volumes:
+      - './webclient:/app'
+      - '/app/node_modules'
+    ports:
+      - "3000:3000"
+    stdin_open: true
+    #environment:
+      #- NODE_ENV=development
+      ## for hot reloading
+      #- CHOKIDAR_USEPOLLING=true
+  webserver-go:
+    container_name: webserver-go
+    build:
+      context: ./webserver
+      dockerfile: Dockerfile
+    #depends_on:
+      #- server
+    volumes:
+      - './webserver:/app'
+    ports:
+      - "9090:9090"
+    restart: on-failure
+    command: go run main.go
+
+
+# dgraph services: https://dgraph.io/blog/post/building-todo-list-react-dgraph/
+  zero:
+    #container_name: draph-zero
+    image: dgraph/dgraph:v20.03.2
+    volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+    ports:
+      - 5080:5080
+      - 6080:6080
+    restart: on-failure
+    command: dgraph zero --my=zero:5080
+
+  server:
+    #container_name: draph-server
+    image: dgraph/dgraph:v20.03.2
+    volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+    ports:
+      - 8080:8080
+      - 9080:9080
+    restart: on-failure
+    command: dgraph alpha --my=server:7080 --lru_mb=2048 --zero=zero:5080
+
+  ratel:
+    #container_name: draph-ratel
+    image: dgraph/dgraph:v20.03.2
+    volumes:
+      - type: volume
+        source: dgraph
+        target: /dgraph
+        volume:
+          nocopy: true
+    ports:
+      - 8000:8000
+    command: dgraph-ratel
+
+volumes:
+  dgraph:
