@@ -4,12 +4,13 @@
 node_modules/
 .pnp/
 .pnp.js
+vendor/
 
 # testing
 coverage/
 
 # production
-build/
+webclient/build/
 
 # misc
 .DS_Store

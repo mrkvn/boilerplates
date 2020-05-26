@@ -1,6 +1,0 @@
-{
-  people(func: has(name)){
-    name
-    age
-  }
-}
