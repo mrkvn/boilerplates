@@ -1,10 +1,10 @@
 FROM golang:1.14
 MAINTAINER mrkvn
 
-WORKDIR $GOPATH/src/boilerplate/webserver
+WORKDIR /app
 COPY . .
 
 RUN go mod download
-RUN go mod verify
-RUN GOOS=linux GOARCH=amd64 go build -ldflags="-w -s" -o /go/bin/webserver
-ENTRYPOINT ["/go/bin/webserver"]
+RUN go get github.com/githubnemo/CompileDaemon
+
+ENTRYPOINT CompileDaemon --build="go build cmd/webserver.go" --command=./webserver

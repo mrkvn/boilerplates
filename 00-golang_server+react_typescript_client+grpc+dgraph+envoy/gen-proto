@@ -1,4 +1,17 @@
 #!/bin/bash
 
-protoc protos/hello/hello.proto --go_out=plugins=grpc:webserver
-protoc protos/hello/hello.proto --js_out=import_style=commonjs:webclient/src --grpc-web_out=import_style=typescript,mode=grpcwebtext:webclient/src
+SERVER="cmd/webserver"
+CLIENT="webclient/src"
+
+protoc protos/hello/hello.proto --go_out=plugins=grpc:$SERVER
+protoc protos/dgraph/dgraph.proto --go_out=plugins=grpc:$SERVER
+protoc protos/hello/hello.proto --js_out=import_style=commonjs:$CLIENT --grpc-web_out=import_style=typescript,mode=grpcwebtext:$CLIENT
+protoc protos/dgraph/dgraph.proto --js_out=import_style=commonjs:$CLIENT --grpc-web_out=import_style=typescript,mode=grpcwebtext:$CLIENT
+
+# automatically disable eslint on the generated js file, otherwise, it will not compile
+eslint_disable() {
+	FPATH=$(find . -name "*pb.js" -not -path "*node_modules*")
+	sed -i '1i/*eslint-disable*/' $FPATH
+}
+
+eslint_disable

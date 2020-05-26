@@ -4,12 +4,24 @@
 
 - docker
 - [docker-compose](https://github.com/docker/compose)
+- [go](https://github.com/golang/go)
+- [protoc](https://github.com/protocolbuffers/protobuf/)
+- [protoc-gen-go](https://github.com/golang/protobuf/tree/master/protoc-gen-go)
+	```
+	go get github.com/golang/protobuf/protoc-gen-go
+	```
+- [grpc-web](https://github.com/grpc/grpc-web)
+- [dgo](https://github.com/dgraph-io/dgo)
+	```
+	go get github.com/dgraph-io/dgo
+	```
+
 ## Instructions
 
 1. Run _docker-compose_
-```
-docker-compose up --build
-```
+	```
+	docker-compose up --build
+	```
 
 2. [Dgraph](https://github.com/dgraph-io/dgraph) can be accessed in _localhost:8000_. Go to this url and select _Latest_ or go directly to _localhost:8000/?latest_. Go to _Console_, then click _Mutate_.
 

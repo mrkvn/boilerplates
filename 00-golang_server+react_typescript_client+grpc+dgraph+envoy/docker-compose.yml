@@ -13,38 +13,34 @@ services:
     build:
       context: ./webclient
       dockerfile: Dockerfile
-    #depends_on:
-      #- envoy
-      #- webserver-go
+    depends_on:
+      - webserver-go
     volumes:
       - './webclient:/app'
       - '/app/node_modules'
     ports:
       - "3000:3000"
     stdin_open: true
-    #environment:
-      #- NODE_ENV=development
-      ## for hot reloading
-      #- CHOKIDAR_USEPOLLING=true
   webserver-go:
     container_name: webserver-go
     build:
       context: ./webserver
       dockerfile: Dockerfile
-    #depends_on:
-      #- server
+    depends_on:
+      - dgraph-alpha
+      - dgraph-zero
+      - envoy
     volumes:
       - './webserver:/app'
     ports:
       - "9090:9090"
     restart: on-failure
-    command: go run main.go
-
-
+    #command: go run main.go
 # dgraph services: https://dgraph.io/blog/post/building-todo-list-react-dgraph/
-  zero:
-    container_name: draph-zero
+  dgraph-zero:
+    container_name: dgraph-zero
     image: dgraph/dgraph:v20.03.2
+    hostname: "dgraph-zero"
     volumes:
       - type: volume
         source: dgraph
@@ -54,12 +50,13 @@ services:
     ports:
       - 5080:5080
       - 6080:6080
-    restart: on-failure
-    command: dgraph zero --my=zero:5080
+    #restart: on-failure
+    command: dgraph zero --my=dgraph-zero:5080
 
-  server:
-    container_name: draph-server
+  dgraph-alpha:
+    container_name: dgraph-alpha
     image: dgraph/dgraph:v20.03.2
+    hostname: "dgraph-alpha"
     volumes:
       - type: volume
         source: dgraph
@@ -69,12 +66,13 @@ services:
     ports:
       - 8080:8080
       - 9080:9080
-    restart: on-failure
-    command: dgraph alpha --my=server:7080 --lru_mb=2048 --zero=zero:5080
+    #restart: on-failure
+    command: dgraph alpha --my=dgraph-alpha:7080 --lru_mb=2048 --zero=dgraph-zero:5080
 
-  ratel:
-    container_name: draph-ratel
+  dgraph-ratel:
+    container_name: dgraph-ratel
     image: dgraph/dgraph:v20.03.2
+    hostname: "dgraph-ratel"
     volumes:
       - type: volume
         source: dgraph
