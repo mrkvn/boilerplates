@@ -25,7 +25,7 @@ function App() {
   }`);
   dgraph.query(query, {}, (err, response) => {
     console.log(response);
-    console.log(response.getResponse());
+    console.log(JSON.parse(response.getResponse()));
     console.log(err);
   });
 

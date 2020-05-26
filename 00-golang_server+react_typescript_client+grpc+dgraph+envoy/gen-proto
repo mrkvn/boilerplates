@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVER="cmd/webserver"
+SERVER="webserver/cmd"
 CLIENT="webclient/src"
 
 protoc protos/hello/hello.proto --go_out=plugins=grpc:$SERVER

@@ -20,13 +20,6 @@ func NewDgraphServer() *dgraphServer {
 func (*dgraphServer) Query(ctx context.Context, req *dgraphpb.QueryRequest) (*dgraphpb.QueryResponse, error) {
 	fmt.Printf("DraphQuery was invoked with request: %v\n", req)
 	query := req.GetQuery()
-	//fmt.Println(query)
-	//query = `{
-	//people(func: has(name)){
-	//name
-	//age
-	//}
-	//}`
 	fmt.Println("Establishing Connection with Dgraph...")
 
 	// with docker-compose
@@ -42,12 +35,12 @@ func (*dgraphServer) Query(ctx context.Context, req *dgraphpb.QueryRequest) (*dg
 	defer conn.Close()
 
 	dg := dgo.NewDgraphClient(api.NewDgraphClient(conn))
-	resp, _ := dg.NewTxn().Query(context.Background(), query)
-	//if err != nil {
-	//fmt.Println("Cannot query from Dgraph")
-	//}
+	resp, err := dg.NewTxn().Query(context.Background(), query)
+	if err != nil {
+		fmt.Println("Cannot query from Dgraph")
+	}
 	fmt.Printf("Response: %s\n", resp.Json)
-	response := dgraphpb.QueryResponse{Response: resp.String()}
+	response := dgraphpb.QueryResponse{Response: string(resp.Json)}
 
 	return &response, nil
 }
