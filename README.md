@@ -1,4 +1,4 @@
 # Boilerplates
 
-# License
-__MIT__
+## License
+MIT
