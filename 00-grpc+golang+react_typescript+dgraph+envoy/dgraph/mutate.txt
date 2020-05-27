@@ -1,0 +1,16 @@
+mutation {
+  addProduct(input: [
+    { name: "GraphQL on Dgraph"},
+    { name: "Dgraph: The GraphQL Database"}
+  ]) {
+    product {
+      productID
+      name
+    }
+  }
+  addCustomer(input: [{ username: "Michael"}]) {
+    customer {
+      username
+    }
+  }
+}

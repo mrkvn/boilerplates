@@ -4,7 +4,7 @@ import (
 	"context"
 	"fmt"
 
-	hellopb "github.com/mrkvn/boilerplates/00/webserver/api/protobuf/hello"
+	hellopb "github.com/mrkvn/boilerplates/00/grpc-server/api/protobuf/hello"
 )
 
 type helloServer struct{}

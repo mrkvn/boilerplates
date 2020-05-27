@@ -5,10 +5,10 @@ import (
 	"log"
 	"net"
 
-	dgraphpb "github.com/mrkvn/boilerplates/00/webserver/api/protobuf/dgraph"
-	hellopb "github.com/mrkvn/boilerplates/00/webserver/api/protobuf/hello"
-	"github.com/mrkvn/boilerplates/00/webserver/pkg/dgraph"
-	"github.com/mrkvn/boilerplates/00/webserver/pkg/hello"
+	dgraphpb "github.com/mrkvn/boilerplates/00/grpc-server/api/protobuf/dgraph"
+	hellopb "github.com/mrkvn/boilerplates/00/grpc-server/api/protobuf/hello"
+	"github.com/mrkvn/boilerplates/00/grpc-server/pkg/dgraph"
+	"github.com/mrkvn/boilerplates/00/grpc-server/pkg/hello"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 )

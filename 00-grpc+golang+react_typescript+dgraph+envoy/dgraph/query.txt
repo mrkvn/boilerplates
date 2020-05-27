@@ -1,6 +1,5 @@
 {
-  people(func: has(name)){
-    name
-    age
+  customer(func: has(Customer.username)) {
+    Customer.username
   }
 }

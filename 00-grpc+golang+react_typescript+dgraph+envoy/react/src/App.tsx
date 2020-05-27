@@ -10,24 +10,30 @@ function App() {
   const request = new HelloRequest();
   request.setName("There!");
   greeter.sayHello(request, {}, (err, response) => {
-    console.log(response);
     console.log(response.getReply());
-    console.log(err);
   });
 
+  // query dgraph using grpc. NOTE: syntax is GraphQL+-
   const dgraph = new QueryClient(envoyProxy);
-  const query = new QueryRequest();
-  query.setQuery(`{
-    people(func: has(name)){
-      name
-      age
+  const grpcQuery = new QueryRequest();
+  grpcQuery.setQuery(`{
+    customer(func: has(Customer.username)){
+      Customer.username
     }
   }`);
-  dgraph.query(query, {}, (err, response) => {
-    console.log(response);
+  dgraph.query(grpcQuery, {}, (err, response) => {
     console.log(JSON.parse(response.getResponse()));
-    console.log(err);
   });
+
+  // query dgraph using its graphql endpoint. NOTE: syntax is GraphQL
+  const graphqlQuery = `{
+  queryCustomer(filter: {username: {regexp: "/Mich.*/"}}) {
+    username
+  }
+}`;
+  fetch(`http://localhost:8080/graphql?query=${graphqlQuery}`)
+    .then((resp) => resp.json())
+    .then((data) => console.log(data));
 
   return <div className="App">Hello</div>;
 }

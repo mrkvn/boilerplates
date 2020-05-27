@@ -1,4 +1,4 @@
-# Go lang web server + gRPC + Dgraph Database + React Typescript web client + Envoy
+# Go lang + gRPC + Dgraph Database + React Typescript + Envoy
 
 ## Prerequisites
 
@@ -15,21 +15,60 @@
 	```
 	go get github.com/dgraph-io/dgo
 	```
+- [curl](https://github.com/curl/curl)
+- [Chrome Extension: GraphiQL](https://chrome.google.com/webstore/detail/graphiql-extension/jhbedfdjpmemmbghfecnaeeiokonjclb?hl=en)
 
 ## Instructions
 
-1. Run _docker-compose_
+- Run _docker-compose_.
 	```
 	docker-compose up --build
 	```
 
-2. [Dgraph](https://github.com/dgraph-io/dgraph) can be accessed in _localhost:8000_. Go to this url and select _Latest_ or go directly to _localhost:8000/?latest_. Go to _Console_, then click _Mutate_.
 
-3. Copy/Paste the contents of _mutate.json_ to the _Mutate_ box.
+- To access [Dgraph](https://github.com/dgraph-io/dgraph)'s _GraphQL_ endpoint, upload a [schema](dgraph/schema.graphql) using [curl](https://github.com/curl/curl).
+	```
+	curl -X POST localhost:8080/admin/schema --data-binary '@schema.graphql'
+	```
 
-4. Query the data by copy/pasting the contents of _query.txt_ to the _Query_ box.
+- Open the [Chrome Extension: GraphiQL](https://chrome.google.com/webstore/detail/graphiql-extension/jhbedfdjpmemmbghfecnaeeiokonjclb?hl=en) and set the endpoint to _http://localhost:8080/graphql_. Copy/Paste the contents of [mutate](dgraph/mutate.txt) to the box provided then click the _Play_ button or press _Ctrl-Enter_.
 
-4. [React](https://github.com/facebook/react) is in _localhost:3000_
+	_Note: This is GraphQL syntax_
+
+	```
+	mutation {
+		addProduct(input: [
+			{ name: "GraphQL on Dgraph"},
+			{ name: "Dgraph: The GraphQL Database"}
+		]) {
+			product {
+				productID
+				name
+			}
+		}
+		addCustomer(input: [{ username: "Michael"}]) {
+			customer {
+				username
+			}
+		}
+	}
+	```
+
+- Access Dgraph Ratel on _localhost:8000_ and select _Latest_.
+
+- Query the data by copy/pasting the contents of [query](dgraph/query.txt) to the _Query_ box. Data can also be queried from GraphiQL though the syntax would be different (GraphQL syntax must be used).
+
+	_Note: This is GraphQL+- syntax_
+
+	```
+	{
+		customer(func: has(Customer.username)) {
+			Customer.username
+		}
+	}
+	```
+
+- Open the [React](https://github.com/facebook/react) app (_localhost:3000_) and see the console log. Two queries should be logged. One from the gRPC call and one from the GraphQL endpoint.
 
 ## Notes
 
@@ -37,4 +76,4 @@
 
 - [gRPC](https://github.com/grpc/grpc) server is listening on port _9090_.
 
-- The _gen-proto_ file is a script to generate the proto file for _go_ and _typescript/js_.
+- The [gen-proto](gen-proto) file is a script to generate the protobuf files for _go_ and _typescript/js_.

@@ -7,7 +7,7 @@ import (
 
 	"github.com/dgraph-io/dgo/v200"
 	"github.com/dgraph-io/dgo/v200/protos/api"
-	dgraphpb "github.com/mrkvn/boilerplates/00/webserver/api/protobuf/dgraph"
+	dgraphpb "github.com/mrkvn/boilerplates/00/grpc-server/api/protobuf/dgraph"
 	"google.golang.org/grpc"
 )
 

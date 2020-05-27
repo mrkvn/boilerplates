@@ -1,4 +1,4 @@
-module github.com/mrkvn/boilerplates/00
+module github.com/mrkvn/boilerplates/00/grpc-server
 
 go 1.13
 
